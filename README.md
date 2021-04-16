@@ -102,3 +102,87 @@ namespace Connect4
 
 
         }
+        
+       
+        class Program
+        {
+            static void Main(string[] args)
+            {
+                Startup play = new Startup();
+                Startup names = new Startup();
+                Console.WriteLine("Enter the name of first player ");
+                string Firstname = Console.ReadLine();
+
+                Console.WriteLine("Enter the name of second player ");
+                string SP = Console.ReadLine();
+
+                char contestant = 'x';
+                int Tab;
+
+                bool pin = true;
+                bool pop;
+
+
+                while (pin)
+                {
+
+                    Console.Clear();
+                    play.gamearea();
+
+                    do
+                    {
+                        pop = true;
+
+
+                        if (Int32.TryParse(Console.ReadLine(), out Tab))
+                        {
+                            if (Tab <= 1 && Tab <= 7)
+                            {
+                                if (play.enteriesentered(contestant, Tab))
+                                {
+                                    pop = false;
+                                }
+                                else
+                                {
+                                    Console.Clear();
+                                    play.gamearea();
+                                    Console.WriteLine("Enter another number .");
+                                }
+                            }
+                            else
+                            {
+                                Console.Clear();
+                                play.gamearea();
+                                Console.WriteLine("\nInput integers only between 1 and 7.");
+                            }
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            play.gamearea();
+                            Console.WriteLine("\nInput an integer.");
+                        }
+                    } while (pop);
+
+
+                    if (play.connectfouringrid(contestant))
+                    {
+                        Console.Clear();
+                        play.gamearea();
+                        Console.Write(contestant + "is  winning!");
+
+                        pin = false;
+                    }
+
+
+                    else
+                    {
+                        contestant = contestant == 'x' ? 'O' : 'x';
+                    }
+                }
+
+                Console.ReadLine();
+            }
+        }
+    }
+}
