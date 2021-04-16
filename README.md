@@ -2,187 +2,88 @@ using System;
 
 namespace Connect4
 {
-    public class Startup
+    class Program
     {
-
-        public char[,] area;
-
-        int enteries;
-
-        public string FP;
-        public string SP;
-
-
-        public Startup()
+        static void Main(string[] args)
         {
+            Startup play = new Startup();
+            Startup names = new Startup();
+            Console.WriteLine("Enter the name of first player ");
+            string Firstname = Console.ReadLine();
 
-            area = new char[6, 7];
-
-            for (int i = 0; i < 6; i++)
-                for (int j = 0; j < 6; j++)
-                    area[i, j] = '*';
-        }
-
-
+            Console.WriteLine("Enter the name of second player ");
+            string SP = Console.ReadLine();
 
 
+            char contestant = '1';
+            int Tab;
 
-        public Startup(string Firstname, string secondname)
-        {
-            FP = Firstname;
-            SP = secondname;
-        }
+            bool pin = true;
+            bool pop;
 
-
-
-
-        public void gamearea()
-        {
-            for (int i = 0; i < 6; i++)
+            while (pin)
             {
-                for (int j = 0; j < 7; j++)
+
+                Console.Clear();
+                play.gamearea();
+
+                do
                 {
-                    Console.Write(area[i, j]);
+                    pop = true;
 
-                }
-                Console.Write('\n');
-            }
-        }
-
-
-
-
-        public bool enteriesentered(char player, int col)
-        {
-            col--;
-
-            if (area[0, col] != '*')
-                return false;
-
-            for (int i = 0; i < 6; i++)
-            {
-                if ((i == 6 - 1) || (area[i + 1, col] != '*'))
-                {
-                    area[i, col] = player;
-                    break;
-                }
-            }
-
-            enteries++;
-            return true;
-        }
-
-
-
-
-
-        public bool connectfouringrid(char player)
-        {
-
-            for (int y = 0; y < 6; y++)
-                for (int x = 0; x < 4; x++)
-                    if (area[y, x] == player &&
-                        area[y, x + 1] == player &&
-                        area[y, x + 2] == player &&
-                        area[y, x + 3] == player)
-
-                        return true;
-
-            for (int y = 0; y < 4; y++)
-                for (int x = 0; x < 6; x++)
-                    if (area[y, x] == player &&
-                        area[y + 1, x] == player &&
-                        area[y + 2, x] == player &&
-                        area[y + 3, x] == player)
-
-                        return true;
-
-
-            return true;
-
-
-        }
-        
-       
-        class Program
-        {
-            static void Main(string[] args)
-            {
-                Startup play = new Startup();
-                Startup names = new Startup();
-                Console.WriteLine("Enter the name of first player ");
-                string Firstname = Console.ReadLine();
-
-                Console.WriteLine("Enter the name of second player ");
-                string SP = Console.ReadLine();
-
-                char contestant = 'x';
-                int Tab;
-
-                bool pin = true;
-                bool pop;
-
-
-                while (pin)
-                {
-
-                    Console.Clear();
-                    play.gamearea();
-
-                    do
+                    Console.WriteLine("\n Turn of Contestant " + contestant + ":");
+                    if (Int32.TryParse(Console.ReadLine(), out Tab))
                     {
-                        pop = true;
-
-
-                        if (Int32.TryParse(Console.ReadLine(), out Tab))
+                        if (1 <= Tab && Tab <= 7)
                         {
-                            if (Tab <= 1 && Tab <= 7)
+                            if (play.enteriesentered(contestant, Tab))
                             {
-                                if (play.enteriesentered(contestant, Tab))
-                                {
-                                    pop = false;
-                                }
-                                else
-                                {
-                                    Console.Clear();
-                                    play.gamearea();
-                                    Console.WriteLine("Enter another number .");
-                                }
+                                pop = false;
                             }
                             else
                             {
                                 Console.Clear();
                                 play.gamearea();
-                                Console.WriteLine("\nInput integers only between 1 and 7.");
+                                Console.WriteLine("\nNo much space left in this column .");
                             }
                         }
                         else
                         {
                             Console.Clear();
                             play.gamearea();
-                            Console.WriteLine("\nInput an integer.");
+                            Console.WriteLine("\nInput integers only between 1 and 7.");
                         }
-                    } while (pop);
-
-
-                    if (play.connectfouringrid(contestant))
+                    }
+                    else
                     {
                         Console.Clear();
                         play.gamearea();
-                        Console.Write(contestant + "is  winning!");
-
-                        pin = false;
+                        Console.WriteLine("\nInput an integer.");
                     }
+                } while (pop);
 
+                if (play.connectfouringrid(contestant))
+                {
+                    Console.Clear();
+                    play.gamearea();
+                    Console.Write("\nPlayer " + contestant + "HAS WON!!!!!" + "\n Please enter to quit the game ");
 
-                    else
-                    {
-                        contestant = contestant == 'x' ? 'O' : 'x';
-                    }
+                    pin = false;
                 }
+                else if (play.outoforder())
+                {
+                    Console.Clear();
+                    play.gamearea();
+                    Console.WriteLine("\nIt is a draw." + "\nPress enter to quit.");
 
-                Console.ReadLine();
+                    pin = false;
+                }
+                else
+                {
+                    contestant = contestant == '1' ? '2' : '1';
+                }
             }
+
+            Console.ReadKey();
         }
     }
-}
