@@ -87,3 +87,97 @@ namespace Connect4
             Console.ReadKey();
         }
     }
+ class Startup
+
+    {
+        public string FP;
+        public string SP;
+        public Startup(string Firstname, string secondname)
+        {
+            FP = Firstname;
+            SP = secondname;
+        }
+        const int Rows = 6, col = 7;
+        
+
+        private char[,] area;
+
+        int enteries;
+
+        public Startup()
+        {
+            area = new char[6, 7];
+
+            for (int i = 0; i < 6; i++)
+                for (int j = 0; j < 6; j++)
+                    area[i, j] = '*';
+        }
+
+        public void gamearea()
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    Console.Write(area[i,j]);
+                    Console.Write(' ');
+                }
+                Console.Write('\n');
+            }
+        }
+        public bool enteriesentered(char player, int column)
+        {
+            column--;
+
+            if (area[0, column] != '*')
+                return false;
+
+            for (int i = 0; i < 6; i++)
+            {
+                if ((i== 6 - 1) || (area[i + 1, column] != '*'))
+                {
+                    area[i, column] = player;
+                    break;
+                }
+            }
+
+            enteries++;
+            return true;
+        }
+
+        public bool connectfouringrid(char player)
+        {
+                for (int i= 0; i <6; i++)
+                for (int j = 0; j < 4; j++)
+                    if (area[i, j] == player && area[i, j + 1] == player)
+                        if (area[i, j + 2] == player && area[i, j + 3] == player)
+                            return true;
+
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 7; j++)
+                    if (area[i, j] == player && area[i + 1, j] == player)
+                        if (area[i + 2, j] == player && area[i + 3, j] == player)
+                            return true;
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j= 0; j < 7; j++)
+                {
+
+                    if (area[i, j] == player)
+                    {
+
+
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public bool outoforder()
+        {
+            return enteries >= 6 * 7;
+        }
+    }
+}
